@@ -1,0 +1,4 @@
+sec-edgar-downloader
+beautifulsoup4
+pandas
+matplotlib
