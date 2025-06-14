@@ -1,64 +1,76 @@
-
 # 10-K Risk Factor Explorer
 
-This interactive Dash web app lets you explore and analyze the "Risk Factors" section from 10-K filings.
+A dashboard application that parses, analyzes, and visualizes risk factor disclosures from 10-K filings using data sourced from the SEC EDGAR system. This project is part of a broader alternative data pipeline for investment research and portfolio risk assessment.
 
-## 🔍 Features
+## Features
 
-- **Dropdown menu** to select a company filing from a dataset.
-- **Automatic text summarization** using the TextRank algorithm.
-- **Sentiment analysis** using VADER (NLTK).
-- **Top keywords** bar chart based on word frequency.
-- Adjustable **summary length** via slider.
-- Display of full **Risk Factors** text.
+- Visual interface to explore 10-K risk factor sections
+- Automatic text summarization using extractive NLP techniques
+- Sentiment analysis using VADER
+- Word frequency analysis and bar chart visualization
 
-## 🗂 Data Source
+## How It Works
 
-The data comes from pre-parsed 10-K filings stored in `data/processed/risk_factors.csv`. Each row includes:
-- `filename`: Unique identifier for the filing.
-- `risk_factors`: Extracted text content from the Risk Factors section.
+1. **Preprocessed Data**: A `risk_factors.csv` file is created from scraped and parsed 10-K filings.
+2. **App Interface**: A Dash web application loads the risk factor texts and allows users to:
+   - Select a specific filing
+   - Adjust summary length
+   - View sentiment metrics
+   - Explore word frequency distribution
 
-## ▶️ How to Run
+## Technologies
 
-1. **Install dependencies** (preferably in a virtual environment):
+- Python
+- Dash (Plotly)
+- NLTK (VADER, stopwords)
+- Summa (TextRank-based summarization)
+- Pandas
+- Plotly
 
-```bash
-pip install dash pandas plotly nltk summa
-```
-
-2. **Download NLTK data** (first time only):
-
-```python
-import nltk
-nltk.download("stopwords")
-nltk.download("vader_lexicon")
-```
-
-3. **Run the app**:
-
-```bash
-python app.py
-```
-
-4. Open your browser and go to `http://127.0.0.1:8050/`.
-
-## 📁 Folder Structure
+## File Structure
 
 ```
-10k-risk-explorer/
-├── data/
-│   └── processed/
-│       └── risk_factors.csv
-├── app.py
-└── README.md
+src/
+├── app.py                   # Main Dash application
+├── analyze.py               # Text analysis helper functions
+├── extract_risk_factors.py  # Parsing 10-K HTML and extracting text
+data/
+├── raw/                     # Raw downloaded HTML files
+├── processed/               # CSV files and visualizations
+notebooks/                   # Exploration and helper notebooks
 ```
 
-## 📌 Future Ideas
+## Setup
 
-- Upload and parse a custom 10-K.
-- Add named entity recognition (NER) for companies, risks, etc.
-- Support EDGAR live lookup by ticker.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/rwn1v/edgar-altdata-pipeline.git
+   cd edgar-altdata-pipeline
+   ```
 
----
+2. Create and activate a virtual environment (optional but recommended):
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # or venv\Scripts\activate on Windows
+   ```
 
-Built with 💻 for educational and portfolio purposes.
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Run the app:
+   ```bash
+   python src/app.py
+   ```
+
+## Future Enhancements
+
+- Live data pull using EDGAR API by ticker
+- Topic modeling for deeper NLP insights
+- Cross-year risk factor similarity
+- Support for 10-Q and international filings
+
+## Author
+
+Erwin Villarreal — [LinkedIn](https://www.linkedin.com/in/erwin-villarreal)
