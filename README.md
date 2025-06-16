@@ -1,76 +1,109 @@
 # 10-K Risk Factor Explorer
 
-A dashboard application that parses, analyzes, and visualizes risk factor disclosures from 10-K filings using data sourced from the SEC EDGAR system. This project is part of a broader alternative data pipeline for investment research and portfolio risk assessment.
+A dashboard application that parses, analyzes, and visualizes risk factor disclosures from SEC 10-K filings. This project is part of a broader alternative data pipeline for investment research and portfolio risk assessment.
 
-## Features
+💡 Powered by:
+- **SEC EDGAR** data
+- **Snowflake** as the cloud data warehouse
+- **Dash** for the interactive front end
+- **NLP** techniques (TextRank summarization, VADER sentiment)
 
-- Visual interface to explore 10-K risk factor sections
-- Automatic text summarization using extractive NLP techniques
-- Sentiment analysis using VADER
-- Word frequency analysis and bar chart visualization
+---
 
-## How It Works
+## 🔍 Features
 
-1. **Preprocessed Data**: A `risk_factors.csv` file is created from scraped and parsed 10-K filings.
-2. **App Interface**: A Dash web application loads the risk factor texts and allows users to:
-   - Select a specific filing
-   - Adjust summary length
-   - View sentiment metrics
-   - Explore word frequency distribution
+- 📁 Explore 10-K risk factor sections via dropdown
+- ✂️ Automatic text summarization using extractive NLP
+- 🧠 Sentiment analysis with VADER
+- 📊 Word frequency analysis and bar chart visualization
+- 🧵 Connected to a Snowflake backend — no local CSVs needed
 
-## Technologies
+---
+
+## ⚙️ How It Works
+
+### 1. Data Ingestion
+Filings are downloaded from EDGAR and parsed using Python scripts. Extracted risk factors are uploaded to Snowflake.
+
+### 2. Dashboard Interface
+The Dash app queries Snowflake directly and lets users:
+- Select a specific filing
+- Adjust summary length
+- View sentiment metrics
+- Visualize top words
+
+---
+
+## 🧰 Technologies
 
 - Python
 - Dash (Plotly)
+- Snowflake (`snowflake-connector-python`)
 - NLTK (VADER, stopwords)
-- Summa (TextRank-based summarization)
+- Summa (TextRank summarization)
 - Pandas
-- Plotly
 
-## File Structure
+---
+
+## 📁 File Structure
 
 ```
 src/
-├── app.py                   # Main Dash application
-├── analyze.py               # Text analysis helper functions
-├── extract_risk_factors.py  # Parsing 10-K HTML and extracting text
+├── app.py                   # Dash app UI and callbacks
+├── analyze.py               # Text processing utilities
+├── extract_risk_factors.py  # EDGAR parser
+├── snowflake_query.py       # Upload CSV to Snowflake
+├── snowflake_upload.py      # Snowflake connection test
 data/
-├── raw/                     # Raw downloaded HTML files
-├── processed/               # CSV files and visualizations
-notebooks/                   # Exploration and helper notebooks
+├── raw/                     # Raw EDGAR filings (optional)
+├── processed/               # Parsed and cleaned output
+notebooks/                   # Jupyter notebooks for exploration
 ```
 
-## Setup
+---
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/rwn1v/edgar-altdata-pipeline.git
-   cd edgar-altdata-pipeline
-   ```
+## 🚀 Setup
 
-2. Create and activate a virtual environment (optional but recommended):
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # or venv\Scripts\activate on Windows
-   ```
+```bash
+git clone https://github.com/rwn1v/edgar-altdata-pipeline.git
+cd edgar-altdata-pipeline
+```
 
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+(Optional) Create and activate a virtual environment:
 
-4. Run the app:
-   ```bash
-   python src/app.py
-   ```
+```bash
+python -m venv venv
+venv\Scripts\activate  # Windows
+```
 
-## Future Enhancements
+Install dependencies:
 
-- Live data pull using EDGAR API by ticker
+```bash
+pip install -r requirements.txt
+```
+
+Create a `.env` file at the project root (see `env.example`) and populate it with your Snowflake credentials.
+
+Run the app:
+
+```bash
+python src/app.py
+```
+
+Then open [http://127.0.0.1:8050/](http://127.0.0.1:8050/) in your browser.
+
+---
+
+## 📈 Future Enhancements
+
+- Live EDGAR data pull by ticker
 - Topic modeling for deeper NLP insights
-- Cross-year risk factor similarity
+- Cross-year risk factor comparison
+- Upload support for local 10-Ks
 - Support for 10-Q and international filings
 
-## Author
+---
 
-Erwin Villarreal — [LinkedIn](https://www.linkedin.com/in/erwin-villarreal)
+## 👤 Author
+
+**Erwin Villarreal** — [LinkedIn](https://www.linkedin.com/in/erwin-villarreal/)
