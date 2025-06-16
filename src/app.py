@@ -1,6 +1,10 @@
 import dash
 from dash import dcc, html, Output, Input
 import pandas as pd
+import snowflake.connector
+from dotenv import load_dotenv
+from pathlib import Path
+import os
 from summa.summarizer import summarize
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.corpus import stopwords
@@ -8,7 +12,27 @@ from collections import Counter
 import plotly.graph_objs as go
 import re
 
-# --- Summarization Function ---
+# --- Load Snowflake credentials from .env ---
+env_path = Path(__file__).resolve().parents[1] / ".env"
+load_dotenv(dotenv_path=env_path)
+
+# --- Connect to Snowflake and fetch data ---
+def load_data_from_snowflake():
+    conn = snowflake.connector.connect(
+        user=os.getenv("SNOWFLAKE_USER"),
+        password=os.getenv("SNOWFLAKE_PASSWORD"),
+        account=os.getenv("SNOWFLAKE_ACCOUNT"),
+        warehouse=os.getenv("SNOWFLAKE_WAREHOUSE"),
+        database=os.getenv("SNOWFLAKE_DATABASE", "EDGAR_DEMO"),
+        schema=os.getenv("SNOWFLAKE_SCHEMA", "PUBLIC")
+    )
+
+    query = 'SELECT "filename", "risk_factors" FROM RISK_FACTORS'
+    df = pd.read_sql(query, conn)
+    conn.close()
+    return df.fillna("")
+
+# --- NLP Functions ---
 def summarize_text(text, ratio=0.03):
     try:
         summary = summarize(text, ratio=ratio)
@@ -16,27 +40,24 @@ def summarize_text(text, ratio=0.03):
     except ValueError:
         return "Summary could not be generated for this text."
 
-# --- Sentiment Analysis Function ---
 def analyze_sentiment(text):
     sia = SentimentIntensityAnalyzer()
     scores = sia.polarity_scores(text)
     return f"🟢 Positive: {scores['pos']:.2f} | 🔴 Negative: {scores['neg']:.2f} | 😐 Neutral: {scores['neu']:.2f} | 🧠 Compound: {scores['compound']:.2f}"
 
-# --- Word Frequency Function ---
 def compute_word_frequencies(text, top_n=20):
     words = re.findall(r'\b\w+\b', text.lower())
     words = [word for word in words if word not in stopwords.words("english")]
     freq = Counter(words).most_common(top_n)
     return freq
 
-# --- Load CSV ---
-df = pd.read_csv("data/processed/risk_factors.csv")
+# --- Load data from Snowflake ---
+df = load_data_from_snowflake()
 
 # --- Dash App ---
 app = dash.Dash(__name__)
 app.title = "10-K Risk Factor Explorer"
 
-# --- Layout ---
 app.layout = html.Div([
     html.H1("📄 10-K Risk Factor Explorer"),
 
@@ -88,7 +109,6 @@ app.layout = html.Div([
     })
 ])
 
-# --- Callback ---
 @app.callback(
     [Output("risk-text-box", "children"),
      Output("summary-output", "children"),
@@ -114,7 +134,6 @@ def update_outputs(selected_file, ratio):
 
     return risk_text, summary, sentiment, fig
 
-# --- Run App ---
 if __name__ == "__main__":
     import nltk
     nltk.download("stopwords")
