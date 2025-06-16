@@ -2,25 +2,25 @@
 
 A dashboard application that parses, analyzes, and visualizes risk factor disclosures from SEC 10-K filings. This project is part of a broader alternative data pipeline for investment research and portfolio risk assessment.
 
-💡 Powered by:
-- **SEC EDGAR** data
-- **Snowflake** as the cloud data warehouse
-- **Dash** for the interactive front end
-- **NLP** techniques (TextRank summarization, VADER sentiment)
+Powered by:
+- SEC EDGAR data
+- Snowflake as the cloud data warehouse
+- Dash for the interactive front end
+- NLP techniques (TextRank summarization, VADER sentiment)
 
 ---
 
-## 🔍 Features
+## Features
 
-- 📁 Explore 10-K risk factor sections via dropdown
-- ✂️ Automatic text summarization using extractive NLP
-- 🧠 Sentiment analysis with VADER
-- 📊 Word frequency analysis and bar chart visualization
-- 🧵 Connected to a Snowflake backend — no local CSVs needed
+- Explore 10-K risk factor sections via dropdown
+- Automatic text summarization using extractive NLP
+- Sentiment analysis with VADER
+- Word frequency analysis and bar chart visualization
+- Connected to a Snowflake backend — no local CSVs needed
 
 ---
 
-## ⚙️ How It Works
+## How It Works
 
 ### 1. Data Ingestion
 Filings are downloaded from EDGAR and parsed using Python scripts. Extracted risk factors are uploaded to Snowflake.
@@ -34,7 +34,7 @@ The Dash app queries Snowflake directly and lets users:
 
 ---
 
-## 🧰 Technologies
+## Technologies
 
 - Python
 - Dash (Plotly)
@@ -45,7 +45,7 @@ The Dash app queries Snowflake directly and lets users:
 
 ---
 
-## 📁 File Structure
+## File Structure
 
 ```
 src/
@@ -62,7 +62,7 @@ notebooks/                   # Jupyter notebooks for exploration
 
 ---
 
-## 🚀 Setup
+## Setup
 
 ```bash
 git clone https://github.com/rwn1v/edgar-altdata-pipeline.git
@@ -94,7 +94,7 @@ Then open [http://127.0.0.1:8050/](http://127.0.0.1:8050/) in your browser.
 
 ---
 
-## 📈 Future Enhancements
+## Future Enhancements
 
 - Live EDGAR data pull by ticker
 - Topic modeling for deeper NLP insights
@@ -104,6 +104,6 @@ Then open [http://127.0.0.1:8050/](http://127.0.0.1:8050/) in your browser.
 
 ---
 
-## 👤 Author
+## Author
 
-**Erwin Villarreal** — [LinkedIn](https://www.linkedin.com/in/erwin-villarreal/)
+Erwin Villarreal — [LinkedIn](https://www.linkedin.com/in/erwin-villarreal/)
